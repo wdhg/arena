@@ -1,10 +1,10 @@
-#ifndef ARENA_H
-#define ARENA_H
+#ifndef CARENA_H
+#define CARENA_H
 
 #include <assert.h>
 #include <stdlib.h>
 
-#define INITIAL_ARENA_SIZE 4096
+#define ca_INITIAL_ARENA_SIZE 4096
 
 struct ca_arena {
 	size_t cap; /* capacity, max number of bytes */
@@ -18,7 +18,7 @@ struct ca_arena *ca_arena_alloc(void) {
 	if (arena == NULL) {
 		return NULL;
 	}
-	arena->stack = (char *)calloc(INITIAL_ARENA_SIZE, sizeof(char));
+	arena->stack = (char *)calloc(ca_INITIAL_ARENA_SIZE, sizeof(char));
 	if (arena->stack == NULL) {
 		free(arena);
 		return NULL;
