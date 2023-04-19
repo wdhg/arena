@@ -7,7 +7,9 @@ struct arena *arena_alloc(void) {
 	if (arena == NULL) {
 		return NULL;
 	}
-	arena->stack = (char *)calloc(INITIAL_ARENA_SIZE, sizeof(char));
+	arena->cap   = INITIAL_ARENA_SIZE;
+	arena->len   = 0;
+	arena->stack = (char *)calloc(arena->cap, sizeof(char));
 	if (arena->stack == NULL) {
 		free(arena);
 		return NULL;
