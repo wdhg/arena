@@ -16,13 +16,13 @@ struct arena *arena_alloc(void) {
 }
 
 struct arena *arena_grow(struct arena *arena) {
-	size_t cap_new = arena->cap * 2;
+	size_t cap_new  = arena->cap * 2;
 	char *stack_new = (char *)realloc(arena->stack, cap_new);
 	if (stack_new == NULL) {
 		return NULL;
 	}
 	arena->stack = stack_new;
-	arena->cap = cap_new;
+	arena->cap   = cap_new;
 	return arena;
 }
 
