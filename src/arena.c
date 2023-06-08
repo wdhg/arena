@@ -26,6 +26,10 @@ struct stack *stack_alloc(size_t cap) {
 	stack->cap   = cap;
 	stack->len   = 0;
 	stack->stack = (u8 *)calloc(stack->cap, sizeof(u8));
+	if (stack->stack == NULL) {
+		free(stack);
+		return NULL;
+	}
 	return stack;
 }
 
@@ -33,7 +37,7 @@ int arena_append_stack(struct arena *arena, size_t cap) {
 	struct stack *new_stack;
 	assert(arena != NULL);
 	new_stack = stack_alloc(cap);
-	if (new_stack != NULL) {
+	if (new_stack == NULL) {
 		return 0;
 	}
 	if (arena->last == NULL) {
