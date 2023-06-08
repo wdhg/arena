@@ -9,7 +9,7 @@
 struct stack {
 	size_t cap; /* capacity, max number of bytes */
 	size_t len; /* length, number of allocated bytes */
-	u8 *stack;
+	u8 *bytes;
 	struct stack *next;
 };
 
@@ -25,8 +25,8 @@ struct stack *stack_alloc(size_t cap) {
 	}
 	stack->cap   = cap;
 	stack->len   = 0;
-	stack->stack = (u8 *)calloc(stack->cap, sizeof(u8));
-	if (stack->stack == NULL) {
+	stack->bytes = (u8 *)calloc(stack->cap, sizeof(u8));
+	if (stack->bytes == NULL) {
 		free(stack);
 		return NULL;
 	}
@@ -59,11 +59,11 @@ struct arena *arena_alloc(void) {
 
 void stacks_free(struct stack *stack) {
 	assert(stack != NULL);
-	assert(stack->stack != NULL);
+	assert(stack->bytes != NULL);
 	if (stack->next != NULL) {
 		stacks_free(stack->next);
 	}
-	free(stack->stack);
+	free(stack->bytes);
 	free(stack);
 }
 
@@ -77,7 +77,7 @@ void *stack_push(struct stack *stack, size_t size) {
 	void *ptr;
 	assert(stack != NULL);
 	assert(size <= stack->cap - stack->len);
-	ptr = &stack[stack->len];
+	ptr = &stack->bytes[stack->len];
 	stack->len += size;
 	return ptr;
 }
