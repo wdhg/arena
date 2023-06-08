@@ -1,7 +1,7 @@
 #ifndef ARENA_H
 #define ARENA_H
 
-#include <ctype.h>
+#include <stddef.h>
 
 struct arena;
 
