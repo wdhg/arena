@@ -1,18 +1,11 @@
 #ifndef ARENA_H
 #define ARENA_H
 
-#include <stddef.h>
+#include <ctype.h>
 
-#define INITIAL_ARENA_SIZE 4096
-
-struct arena {
-	size_t cap; /* capacity, max number of bytes */
-	size_t len; /* length, number of allocated bytes */
-	char *stack;
-};
+struct arena;
 
 struct arena *arena_alloc(void);
-struct arena *arena_grow(struct arena *arena);
 void arena_free(struct arena *arena);
 void *arena_push(struct arena *arena, size_t size);
 void *arena_push_zero(struct arena *arena, size_t size);

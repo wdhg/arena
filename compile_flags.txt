@@ -3,3 +3,4 @@
 -pedantic
 -std=c89
 -Iinclude
+-Ilib/fixint/include
