@@ -73,18 +73,18 @@ void arena_free(struct arena *arena) {
 	free(arena);
 }
 
+int stack_can_fit(struct stack *stack, size_t size) {
+	assert(stack != NULL);
+	return (size <= stack->cap - stack->len);
+}
+
 void *stack_push(struct stack *stack, size_t size) {
 	void *ptr;
 	assert(stack != NULL);
-	assert(size <= stack->cap - stack->len);
+	assert(stack_can_fit(stack, size));
 	ptr = &stack->bytes[stack->len];
 	stack->len += size;
 	return ptr;
-}
-
-int stack_can_fit(struct stack *stack, size_t size) {
-	assert(stack != NULL);
-	return (size < stack->cap - stack->len);
 }
 
 void *arena_push(struct arena *arena, size_t size) {
