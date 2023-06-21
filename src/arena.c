@@ -42,10 +42,10 @@ int arena_append_stack(struct arena *arena, size_t cap) {
 	}
 	if (arena->last == NULL) {
 		arena->head = new_stack;
-		arena->last = new_stack;
 	} else {
 		arena->last->next = new_stack;
 	}
+	arena->last = new_stack;
 	return 1;
 }
 
