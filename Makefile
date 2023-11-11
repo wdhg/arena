@@ -4,7 +4,7 @@ DIR_OBJ_LIB = $(DIR_OBJ)/lib
 DIR_OBJ_DEBUG = $(DIR_OBJ)/debug
 
 C_FLAGS  = -Wall -Wextra -pedantic -std=c89
-C_FLAGS += -Iinclude
+C_FLAGS += -Iinc
 C_FLAGS += -Ilib/fixint/include
 
 .PHONY: lib
