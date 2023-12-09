@@ -5,10 +5,10 @@
 
 typedef struct arena Arena;
 
-Arena *arena_alloc(void);
-void arena_free(Arena *arena);
-void *arena_push(Arena *arena, size_t size);
-void *arena_push_zero(Arena *arena, size_t size);
+Arena *ArenaAlloc(void);
+void ArenaFree(Arena *arena);
+void *ArenaPush(Arena *arena, size_t size);
+void *ArenaPushZero(Arena *arena, size_t size);
 
 #define arena_push_array(arena, count, type)                                   \
 	(type *)arena_push((arena), (count) * sizeof(type))
