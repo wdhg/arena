@@ -1,25 +1,29 @@
 #include <arena.h>
 #include <assert.h>
-#include <fixint.h>
+#include <stdint.h>
 #include <stdlib.h>
+
+typedef uint8_t u8;
 
 /* 1 MiB */
 #define MIN_ARENA_SIZE (1 << 20)
+
+typedef struct stack Stack;
 
 struct stack {
 	size_t cap; /* capacity, max number of bytes */
 	size_t len; /* length, number of allocated bytes */
 	u8 *bytes;
-	struct stack *next;
+	Stack *next;
 };
 
 struct arena {
-	struct stack *head;
-	struct stack *last;
+	Stack *head;
+	Stack *last;
 };
 
-struct stack *stack_alloc(size_t cap) {
-	struct stack *stack = (struct stack *)calloc(1, sizeof(struct stack));
+Stack *stack_alloc(size_t cap) {
+	Stack *stack = (Stack *)calloc(1, sizeof(Stack));
 	if (stack == NULL) {
 		return NULL;
 	}
@@ -33,8 +37,8 @@ struct stack *stack_alloc(size_t cap) {
 	return stack;
 }
 
-int arena_append_stack(struct arena *arena, size_t cap) {
-	struct stack *new_stack;
+int arena_append_stack(Arena *arena, size_t cap) {
+	Stack *new_stack;
 	assert(arena != NULL);
 	new_stack = stack_alloc(cap);
 	if (new_stack == NULL) {
@@ -49,15 +53,15 @@ int arena_append_stack(struct arena *arena, size_t cap) {
 	return 1;
 }
 
-struct arena *arena_alloc(void) {
-	struct arena *arena = (struct arena *)calloc(1, sizeof(struct arena));
+Arena *arena_alloc(void) {
+	Arena *arena = (Arena *)calloc(1, sizeof(Arena));
 	if (arena == NULL) {
 		return NULL;
 	}
 	return arena;
 }
 
-void stacks_free(struct stack *stack) {
+void stacks_free(Stack *stack) {
 	assert(stack != NULL);
 	assert(stack->bytes != NULL);
 	if (stack->next != NULL) {
@@ -67,18 +71,18 @@ void stacks_free(struct stack *stack) {
 	free(stack);
 }
 
-void arena_free(struct arena *arena) {
+void arena_free(Arena *arena) {
 	assert(arena != NULL);
 	stacks_free(arena->head);
 	free(arena);
 }
 
-int stack_can_fit(struct stack *stack, size_t size) {
+int stack_can_fit(Stack *stack, size_t size) {
 	assert(stack != NULL);
 	return (size <= stack->cap - stack->len);
 }
 
-void *stack_push(struct stack *stack, size_t size) {
+void *stack_push(Stack *stack, size_t size) {
 	void *ptr;
 	assert(stack != NULL);
 	assert(stack_can_fit(stack, size));
@@ -87,7 +91,7 @@ void *stack_push(struct stack *stack, size_t size) {
 	return ptr;
 }
 
-void *arena_push(struct arena *arena, size_t size) {
+void *arena_push(Arena *arena, size_t size) {
 	assert(arena != NULL);
 	if (arena->last == NULL || !stack_can_fit(arena->last, size)) {
 		size_t new_stack_cap = size < MIN_ARENA_SIZE ? MIN_ARENA_SIZE : size;
@@ -98,7 +102,7 @@ void *arena_push(struct arena *arena, size_t size) {
 	return stack_push(arena->last, size);
 }
 
-void *arena_push_zero(struct arena *arena, size_t size) {
+void *arena_push_zero(Arena *arena, size_t size) {
 	u8 *ptr = (u8 *)arena_push(arena, size);
 	size_t i;
 	if (ptr == NULL) {

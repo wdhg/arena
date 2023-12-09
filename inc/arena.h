@@ -3,12 +3,12 @@
 
 #include <stddef.h>
 
-struct arena;
+typedef struct arena Arena;
 
-struct arena *arena_alloc(void);
-void arena_free(struct arena *arena);
-void *arena_push(struct arena *arena, size_t size);
-void *arena_push_zero(struct arena *arena, size_t size);
+Arena *arena_alloc(void);
+void arena_free(Arena *arena);
+void *arena_push(Arena *arena, size_t size);
+void *arena_push_zero(Arena *arena, size_t size);
 
 #define arena_push_array(arena, count, type)                                   \
 	(type *)arena_push((arena), (count) * sizeof(type))

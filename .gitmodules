@@ -1,3 +1,0 @@
-[submodule "lib/fixint"]
-	path = lib/fixint
-	url = git@github.com:wdhg/fixint.git
