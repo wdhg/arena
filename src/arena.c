@@ -53,7 +53,7 @@ int arena_append_stack(Arena *arena, size_t cap) {
 	return 1;
 }
 
-Arena *arena_alloc(void) {
+Arena *ArenaAlloc(void) {
 	Arena *arena = (Arena *)calloc(1, sizeof(Arena));
 	if (arena == NULL) {
 		return NULL;
@@ -71,7 +71,7 @@ void stacks_free(Stack *stack) {
 	free(stack);
 }
 
-void arena_free(Arena *arena) {
+void ArenaFree(Arena *arena) {
 	assert(arena != NULL);
 	stacks_free(arena->head);
 	free(arena);
@@ -91,7 +91,7 @@ void *stack_push(Stack *stack, size_t size) {
 	return ptr;
 }
 
-void *arena_push(Arena *arena, size_t size) {
+void *ArenaPush(Arena *arena, size_t size) {
 	assert(arena != NULL);
 	if (arena->last == NULL || !stack_can_fit(arena->last, size)) {
 		size_t new_stack_cap = size < MIN_ARENA_SIZE ? MIN_ARENA_SIZE : size;
@@ -102,8 +102,8 @@ void *arena_push(Arena *arena, size_t size) {
 	return stack_push(arena->last, size);
 }
 
-void *arena_push_zero(Arena *arena, size_t size) {
-	u8 *ptr = (u8 *)arena_push(arena, size);
+void *ArenaPushZero(Arena *arena, size_t size) {
+	u8 *ptr = (u8 *)ArenaPush(arena, size);
 	size_t i;
 	if (ptr == NULL) {
 		return NULL;
